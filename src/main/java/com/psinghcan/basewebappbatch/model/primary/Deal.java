@@ -3,10 +3,7 @@ package com.psinghcan.basewebappbatch.model.primary;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
@@ -23,6 +20,8 @@ public class Deal implements Serializable {
     private double amount3;
     private int status;
     private int processStatus;
+    @Column(name = "payment_number")
     private String paymentNumber;
+    @Column(name = "receipt_number")
     private String receiptNumber;
 }
