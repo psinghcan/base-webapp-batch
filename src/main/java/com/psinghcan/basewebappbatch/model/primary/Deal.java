@@ -23,4 +23,6 @@ public class Deal implements Serializable {
     private double amount3;
     private int status;
     private int processStatus;
+    private String paymentNumber;
+    private String receiptNumber;
 }
