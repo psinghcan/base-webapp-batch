@@ -20,29 +20,33 @@ public class LoadDataService {
     }
 
     public void init(){
-        for (int i=0; i<500; i++){
-            loadPayment(i);
-            loadReceipt(i);
-            loadDeal(i);
+        for (int j=0; j< 10; j++){
+            for (int i=0; i<25; i++){
+                loadPayment(j,i);
+                loadReceipt(j,i);
+                loadDeal(j,i);
+            }
         }
+
     }
 
-    private void loadDeal(int i){
+    private void loadDeal(int j, int i){
         Deal deal = new Deal();
-        deal.setNumber("D_" + i);
+        deal.setOffice("O_" + j);
+        deal.setNumber("O_" + j + "_D_" + i);
         deal.setAmount1(100.00);
         deal.setAmount2(150.00);
         deal.setAmount3(200.00);
         deal.setStatus(10);
         deal.setProcessStatus(0);
-        deal.setPaymentNumber("P_" +i);
-        deal.setReceiptNumber("R_" + i);
+        deal.setPaymentNumber("O_" + j + "_P_" +i);
+        deal.setReceiptNumber("O_" + j + "_R_" + i);
         dealRepository.save(deal);
     }
 
-    private void loadPayment(int i){
+    private void loadPayment(int j, int i){
         Payment payment = new Payment();
-        payment.setNumber("P_" + i);
+        payment.setNumber("O_" + j + "_P_" +i);
         payment.setAmount1(100);
         payment.setTax(20);
         payment.setTotal(120);
@@ -51,9 +55,9 @@ public class LoadDataService {
         paymentRepository.save(payment);
     }
 
-    private void loadReceipt(int i){
+    private void loadReceipt(int j, int i){
         Receipt receipt = new Receipt();
-        receipt.setNumber("R_" + i);
+        receipt.setNumber("O_" + j + "_R_" + i);
         receipt.setStatus(10);
         receipt.setProcessStatus(0);
         receipt.setAmount1(100);

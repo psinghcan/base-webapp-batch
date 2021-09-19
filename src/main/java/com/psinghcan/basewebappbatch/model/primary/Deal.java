@@ -14,6 +14,7 @@ public class Deal implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String office;
     private String number;
     private double amount1;
     private double amount2;
