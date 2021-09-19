@@ -21,10 +21,10 @@ public class BaseWebappBatchApplication {
         SpringApplication.run(BaseWebappBatchApplication.class, args);
     }
 
-    @Bean
-    public CommandLineRunner run(LoadDataService loadDataService){
-        return args -> {
-            loadDataService.init();
-        };
-    }
+//    @Bean
+//    public CommandLineRunner run(LoadDataService loadDataService){
+//        return args -> {
+//            loadDataService.init();
+//        };
+//    }
 }
