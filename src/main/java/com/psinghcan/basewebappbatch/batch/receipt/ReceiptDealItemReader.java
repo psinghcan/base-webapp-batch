@@ -36,7 +36,7 @@ public class ReceiptDealItemReader implements ItemReader<Deal>, StepExecutionLis
     @Override
     public void beforeStep(StepExecution stepExecution) {
         System.out.println("this is before the step");
-        receiptDealIterator = dealRepository.findAllByStatus(20).iterator();
+        receiptDealIterator = dealRepository.findAllByStatus(21).iterator();
     }
 
     @Override
