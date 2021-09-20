@@ -13,9 +13,15 @@ import org.springframework.batch.core.configuration.annotation.JobBuilderFactory
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.tasklet.TaskletStep;
+import org.springframework.batch.item.ItemWriter;
+import org.springframework.batch.item.file.FlatFileItemWriter;
+import org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor;
+import org.springframework.batch.item.file.transform.DelimitedLineAggregator;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
@@ -50,8 +56,23 @@ public class ReceiptBatchConfig {
     }
 
     @Bean
-    public ReceiptItemWriter receiptItemWriter(){
-        return new ReceiptItemWriter();
+    @Qualifier("step2Writer")
+    public ItemWriter<Deal> step2Writer()
+    {
+        FlatFileItemWriter<Deal> writer = new FlatFileItemWriter<>();
+        Resource resource = new FileSystemResource("output/file_1.csv");
+        writer.setResource(resource);
+        writer.setLineAggregator(new DelimitedLineAggregator<Deal>() {
+            {
+                setDelimiter(",");
+                setFieldExtractor(new BeanWrapperFieldExtractor<Deal>() {
+                    {
+                        setNames(new String[] { "id", "office", "number", "amount1", "amount2", "amount3", "status", "processStatus", "paymentNumber", "receiptNumber" });
+                    }
+                });
+            }
+        });
+        return writer;
     }
 
     @Bean
@@ -68,7 +89,7 @@ public class ReceiptBatchConfig {
     @Qualifier("step2")
     public Step step2(ReceiptDealItemReader reader,
                      ReceiptItemProcessor processor,
-                     ReceiptItemWriter writer){
+                     @Qualifier("step2Writer") ItemWriter writer){
         TaskletStep step = stepBuilderFactory.get("receipt")
                 .<Deal, Deal>chunk(1)
                 .reader(reader)
