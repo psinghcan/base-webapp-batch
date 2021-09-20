@@ -7,6 +7,7 @@ import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Service
@@ -19,8 +20,11 @@ public class ReceiptJobService {
     }
 
     public void startReceiptBatchJob(){
+        String name = new SimpleDateFormat("yyyyMMddHHmm'.csv'").format(new Date());
         JobParametersBuilder jobParametersBuilder = new JobParametersBuilder()
                 .addString("name", "receipt-deal-batch-job")
+                .addString("file_1_", "file_1_" + name)
+                .addString("file_2_", "file_2_" + name)
                 .addDate("time", new Date());
         try{
             JobExecution jobExecution = jobLauncher.run(job, jobParametersBuilder.toJobParameters());

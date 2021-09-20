@@ -1,5 +1,9 @@
 package com.psinghcan.basewebappbatch.batch.receipt;
 
+import com.psinghcan.basewebappbatch.batch.receipt.step1.ReceiptTasklet;
+import com.psinghcan.basewebappbatch.batch.receipt.step2.ReceiptDealItemReader;
+import com.psinghcan.basewebappbatch.batch.receipt.step2.ReceiptItemProcessor;
+import com.psinghcan.basewebappbatch.batch.receipt.step2.ReceiptItemWriter;
 import com.psinghcan.basewebappbatch.model.primary.Deal;
 import com.psinghcan.basewebappbatch.repository.primary.DealRepository;
 import org.springframework.batch.core.Job;

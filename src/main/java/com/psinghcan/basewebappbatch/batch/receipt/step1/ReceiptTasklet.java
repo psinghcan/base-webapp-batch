@@ -1,4 +1,4 @@
-package com.psinghcan.basewebappbatch.batch.receipt;
+package com.psinghcan.basewebappbatch.batch.receipt.step1;
 
 import com.psinghcan.basewebappbatch.repository.primary.DealRepository;
 import org.springframework.batch.core.StepContribution;

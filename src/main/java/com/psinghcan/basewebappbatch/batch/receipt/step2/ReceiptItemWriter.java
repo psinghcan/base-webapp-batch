@@ -1,4 +1,4 @@
-package com.psinghcan.basewebappbatch.batch.receipt;
+package com.psinghcan.basewebappbatch.batch.receipt.step2;
 
 import com.psinghcan.basewebappbatch.model.primary.Deal;
 import org.springframework.batch.item.ItemWriter;
