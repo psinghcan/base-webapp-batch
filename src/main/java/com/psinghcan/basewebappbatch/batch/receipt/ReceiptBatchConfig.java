@@ -1,9 +1,8 @@
 package com.psinghcan.basewebappbatch.batch.receipt;
 
-import com.psinghcan.basewebappbatch.batch.receipt.step1.ReceiptTasklet;
+import com.psinghcan.basewebappbatch.batch.receipt.step1.Step1Tasklet;
 import com.psinghcan.basewebappbatch.batch.receipt.step2.ReceiptDealItemReader;
 import com.psinghcan.basewebappbatch.batch.receipt.step2.ReceiptItemProcessor;
-import com.psinghcan.basewebappbatch.batch.receipt.step2.ReceiptItemWriter;
 import com.psinghcan.basewebappbatch.model.primary.Deal;
 import com.psinghcan.basewebappbatch.repository.primary.DealRepository;
 import org.springframework.batch.core.Job;
@@ -13,6 +12,7 @@ import org.springframework.batch.core.configuration.annotation.JobBuilderFactory
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.tasklet.TaskletStep;
+import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.file.FlatFileItemWriter;
 import org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor;
@@ -38,11 +38,12 @@ public class ReceiptBatchConfig {
         this.jobRepository = jobRepository;
         this.dealRepository = dealRepository;
         this.jdbcTemplate = jdbcTemplate;
+        this.executionContext = new ExecutionContext();
     }
 
     @Bean
-    public ReceiptTasklet receiptTasklet(){
-        return new ReceiptTasklet(dealRepository, jdbcTemplate);
+    public Step1Tasklet step1Tasklet(){
+        return new Step1Tasklet(dealRepository, jdbcTemplate, executionContext);
     }
 
     @Bean
@@ -103,8 +104,13 @@ public class ReceiptBatchConfig {
     @Qualifier("step1")
     public Step step1() throws Exception{
         return stepBuilderFactory.get("step1")
-                .tasklet(receiptTasklet())
+                .tasklet(step1Tasklet())
                 .build();
+    }
+
+    @Bean
+    public ExecutionContext executionContext(){
+        return executionContext;
     }
 
     private final JobBuilderFactory jobBuilderFactory;
@@ -113,4 +119,5 @@ public class ReceiptBatchConfig {
     private final JobRepository jobRepository;
     private final DealRepository dealRepository;
     private final JdbcTemplate jdbcTemplate;
+    private final ExecutionContext executionContext;
 }

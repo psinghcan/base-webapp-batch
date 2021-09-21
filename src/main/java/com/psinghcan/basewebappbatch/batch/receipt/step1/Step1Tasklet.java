@@ -4,15 +4,17 @@ import com.psinghcan.basewebappbatch.repository.primary.DealRepository;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
+import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-public class ReceiptTasklet implements Tasklet {
-    public ReceiptTasklet(DealRepository dealRepository, JdbcTemplate jdbcTemplate) {
+public class Step1Tasklet implements Tasklet {
+    public Step1Tasklet(DealRepository dealRepository, JdbcTemplate jdbcTemplate, ExecutionContext executionContext) {
         this.dealRepository = dealRepository;
         this.jdbcTemplate = jdbcTemplate;
+        this.executionContext = executionContext;
     }
 
     @Override
@@ -31,4 +33,5 @@ public class ReceiptTasklet implements Tasklet {
     private final DealRepository dealRepository;
 
     private final JdbcTemplate jdbcTemplate;
+    private final ExecutionContext executionContext;
 }
