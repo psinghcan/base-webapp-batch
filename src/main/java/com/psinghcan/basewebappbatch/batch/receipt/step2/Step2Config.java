@@ -4,6 +4,7 @@ import com.psinghcan.basewebappbatch.model.primary.Deal;
 import com.psinghcan.basewebappbatch.repository.primary.DealRepository;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.tasklet.TaskletStep;
 import org.springframework.batch.item.ExecutionContext;
@@ -11,7 +12,11 @@ import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.file.FlatFileItemWriter;
 import org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor;
 import org.springframework.batch.item.file.transform.DelimitedLineAggregator;
+import org.springframework.batch.item.json.JacksonJsonObjectMarshaller;
+import org.springframework.batch.item.json.JsonFileItemWriter;
+import org.springframework.batch.item.json.builder.JsonFileItemWriterBuilder;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
@@ -59,11 +64,29 @@ public class Step2Config {
     }
 
     @Bean
+//    @StepScope
     @Qualifier("step2Writer")
     public ItemWriter<Deal> step2Writer()
     {
+        JsonFileItemWriterBuilder<Deal> builder = new JsonFileItemWriterBuilder<>();
+        JacksonJsonObjectMarshaller<Deal> marshaller = new JacksonJsonObjectMarshaller<>();
+        Resource resource = new FileSystemResource("output/current/file-1.json");
+        return builder
+                .name("step2Writer")
+                .jsonObjectMarshaller(marshaller)
+                .resource(resource)
+                .build();
+    }
+
+    @Bean
+    @StepScope
+    @Qualifier("step2WriterCsv")
+    public ItemWriter<Deal> step2WriterCsv(@Value("#{jobParameters['file1']}") String file1)
+    {
         FlatFileItemWriter<Deal> writer = new FlatFileItemWriter<>();
-        Resource resource = new FileSystemResource("output/current/file-1.csv");
+        System.out.println(file1);
+//        Resource resource = new FileSystemResource("output/current/file-1.json");
+        Resource resource = new FileSystemResource(file1);
         writer.setResource(resource);
         writer.setLineAggregator(new DelimitedLineAggregator<Deal>() {
             {

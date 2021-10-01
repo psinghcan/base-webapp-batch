@@ -22,13 +22,15 @@ public class ReceiptJobService {
     }
 
     public void startReceiptBatchJob(){
-        String name = new SimpleDateFormat("yyyyMMddHHmm'.csv'").format(new Date());
-        executionContext.put("file_1", "file_1_" + name);
-        executionContext.put("file_2", "file_2_" + name);
+        String date = new SimpleDateFormat("yyyyMMddHHmm'.csv'").format(new Date());
+        String file1 = "output/file-1-" + date + ".json";
+        String file2 = "output/file-2-" + date + ".json";
+        executionContext.put("file1", file1);
+        executionContext.put("file2", file2);
         JobParametersBuilder jobParametersBuilder = new JobParametersBuilder()
                 .addString("name", "receipt-deal-batch-job")
-                .addString("file_1_", "file_1_" + name)
-                .addString("file_2_", "file_2_" + name)
+                .addString("file1", file1)
+                .addString("file2", file2)
                 .addDate("time", new Date());
         try{
             JobExecution jobExecution = jobLauncher.run(job, jobParametersBuilder.toJobParameters());
