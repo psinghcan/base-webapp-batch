@@ -38,10 +38,14 @@ public class ReceiptBatchConfig {
 
     @Bean
     @Qualifier("receipt-batch-job")
-    public Job job(@Qualifier("step1") Step step1, @Qualifier("step2") Step step2){
+    public Job job(@Qualifier("step1") Step step1,
+                   @Qualifier("step2") Step step2,
+                   @Qualifier("step3") Step step3)
+    {
         Job job = jobBuilderFactory.get("receipt-job")
                 .flow(step1)
                 .next(step2)
+                .next(step3)
                 .end().build();
         return job;
     }

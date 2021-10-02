@@ -22,7 +22,7 @@ public class ReceiptJobService {
     }
 
     public void startReceiptBatchJob(){
-        String date = new SimpleDateFormat("yyyyMMddHHmm'.csv'").format(new Date());
+        String date = new SimpleDateFormat("yyyyMMddHHmm").format(new Date());
         String file1 = "output/file-1-" + date + ".json";
         String file2 = "output/file-2-" + date + ".json";
         executionContext.put("file1", file1);
